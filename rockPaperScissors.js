@@ -20,7 +20,6 @@ function getComputerChoice() {
 }
 
 function playRound(playerSelection, computerSelection) {
-
   playerSelection = playerSelection.toLowerCase().trim();
 
   let message = "";
@@ -40,7 +39,30 @@ function playRound(playerSelection, computerSelection) {
   } else if (playerSelection === "scissors" && computerSelection === "paper") {
     message = "You win! The computer loses.";
   } else {
-    console.error("not a valid input")
+    console.error("not a valid input");
   }
   return message;
+}
+
+function getPlayerChoice() {
+  return prompt("What's your choice?");
+}
+
+function game() {
+  let gameLength = parseInt(prompt("How many rounds do you want to play?"));
+
+  if (typeof gameLength != "number") {
+    console.error(typeof gameLength);
+    console.error("Wrong data type");
+  } else {
+    for (let index = 0; index < gameLength; index++) {
+      const playerSelection = getPlayerChoice();
+      const computerSelection = getComputerChoice();
+
+      console.log(`You picked ${playerSelection}.`);
+      console.log(`The computer picked ${computerSelection}.`);
+      console.log(playRound(playerSelection, computerSelection));
+    }
+    console.log("Game Over");
+  }
 }
