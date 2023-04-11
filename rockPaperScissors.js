@@ -1,3 +1,19 @@
+let playerScore = 0;
+let computerScore = 0;
+
+const buttons = document.querySelectorAll("button");
+const gameContainer = document.querySelector(".game-container");
+const gameScore = document.createElement("p");
+const gameOutput = document.createElement("p");
+gameContainer.appendChild(gameScore);
+gameContainer.appendChild(gameOutput);
+updateScoreboard();
+gameOutput.textContent = "Make a selection to start";
+
+function updateScoreboard() {
+  gameScore.textContent = `Player: ${playerScore} Computer:${computerScore}`;
+}
+
 function getComputerChoice() {
   let choice = "";
   let key = Math.floor(Math.random() * 3) + 1;
@@ -25,44 +41,36 @@ function playRound(playerSelection, computerSelection) {
   let message = "";
 
   if (playerSelection === computerSelection) {
-    message = "Tie game!";
+    message = "tie";
   } else if (playerSelection === "rock" && computerSelection === "paper") {
-    message = "You lose! The computer wins.";
+    message = "lose";
   } else if (playerSelection === "rock" && computerSelection === "scissors") {
-    message = "You win! The computer loses.";
+    message = "win";
   } else if (playerSelection === "paper" && computerSelection === "rock") {
-    message = "You win! The computer loses.";
+    message = "win";
   } else if (playerSelection === "paper" && computerSelection === "scissors") {
-    message = "You lose! The computer wins.";
+    message = "lose";
   } else if (playerSelection === "scissors" && computerSelection === "rock") {
-    message = "You lose! The computer wins.";
+    message = "lose";
   } else if (playerSelection === "scissors" && computerSelection === "paper") {
-    message = "You win! The computer loses.";
+    message = "win";
   } else {
     console.error("not a valid input");
+    return "ERROR";
   }
   return message;
 }
 
-function getPlayerChoice() {
-  return prompt("What's your choice?");
-}
+buttons.forEach((button) => {
+  button.addEventListener("click", (e) => {
+    playerSelection = e.target.className;
+    computerSelection = getComputerChoice();
+    message = playRound(playerSelection, computerSelection);
+    if (message === "win") playerScore++;
+    if (message === "lose") computerScore++;
 
-function game() {
-  let gameLength = parseInt(prompt("How many rounds do you want to play?"));
+    updateScoreboard();
 
-  if (typeof gameLength != "number") {
-    console.error(typeof gameLength);
-    console.error("Wrong data type");
-  } else {
-    for (let index = 0; index < gameLength; index++) {
-      const playerSelection = getPlayerChoice();
-      const computerSelection = getComputerChoice();
-
-      console.log(`You picked ${playerSelection}.`);
-      console.log(`The computer picked ${computerSelection}.`);
-      console.log(playRound(playerSelection, computerSelection));
-    }
-    console.log("Game Over");
-  }
-}
+    gameOutput.textContent = `You picked: ${playerSelection}. The computer picked: ${computerSelection}. ${message}`;
+  });
+});
