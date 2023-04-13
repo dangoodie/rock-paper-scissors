@@ -69,8 +69,19 @@ buttons.forEach((button) => {
     if (message === "win") playerScore++;
     if (message === "lose") computerScore++;
 
-    updateScoreboard();
-
-    gameOutput.textContent = `You picked: ${playerSelection}. The computer picked: ${computerSelection}. ${message}`;
+    if (computerScore === 5 || playerScore === 5) {
+      updateScoreboard();
+      if (computerScore === 5) {
+        gameOutput.textContent = `Computer wins! Make a selection to play again.`;
+      }
+      if (playerScore === 5) {
+        gameOutput.textContent = `You win! Make a selection to play again.`;
+      }
+      playerScore = 0;
+      computerScore = 0;
+    } else {
+      updateScoreboard();
+      gameOutput.textContent = `You picked: ${playerSelection}. The computer picked: ${computerSelection}. ${message}`;
+    }
   });
 });
